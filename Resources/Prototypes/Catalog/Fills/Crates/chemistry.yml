@@ -1,0 +1,54 @@
+- type: entity
+  id: CrateReagents1
+  parent: CrateMedicalSecure
+  components:
+  - type: StorageFill
+    contents:
+    - id: BeakerAluminium
+    - id: BeakerCarbon
+    - id: BeakerChlorine
+    - id: BeakerCopper
+
+- type: entity
+  id: CrateReagents2
+  parent: CrateMedicalSecure
+  components:
+  - type: StorageFill
+    contents:
+    - id: BeakerEthanol
+    - id: BeakerFluorine
+    - id: BeakerHydrogen
+    - id: BeakerIodine
+
+- type: entity
+  id: CrateReagents3
+  parent: CrateMedicalSecure
+  components:
+  - type: StorageFill
+    contents:
+    - id: BeakerIron
+    - id: BeakerLithium
+    - id: BeakerMercury
+    - id: BeakerNitrogen
+
+- type: entity
+  id: CrateReagents4
+  parent: CrateMedicalSecure
+  components:
+  - type: StorageFill
+    contents:
+    - id: BeakerOxygen
+    - id: BeakerPhosphorus
+    - id: BeakerPotassium
+    - id: BeakerRadium
+
+- type: entity
+  id: CrateReagents5
+  parent: CrateMedicalSecure
+  components:
+  - type: StorageFill
+    contents:
+    - id: BeakerSilicon
+    - id: BeakerSodium
+    - id: BeakerSugar
+    - id: BeakerSulfur

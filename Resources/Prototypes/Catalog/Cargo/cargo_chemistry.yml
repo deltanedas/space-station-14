@@ -1,0 +1,49 @@
+- type: cargoProduct
+  id: Reagents1
+  icon:
+    sprite: Structures/Storage/Crates/medicalcrate_secure.rsi
+    state: icon
+  product: CrateReagents1
+  cost: 1000
+  category: Medical
+  group: market
+
+- type: cargoProduct
+  id: Reagents2
+  icon:
+    sprite: Structures/Storage/Crates/medicalcrate_secure.rsi
+    state: icon
+  product: CrateReagents2
+  cost: 750
+  category: Medical
+  group: market
+
+- type: cargoProduct
+  id: Reagents3
+  icon:
+    sprite: Structures/Storage/Crates/medicalcrate_secure.rsi
+    state: icon
+  product: CrateReagents3
+  cost: 500
+  category: Medical
+  group: market
+
+- type: cargoProduct
+  id: Reagents4
+  icon:
+    sprite: Structures/Storage/Crates/medicalcrate_secure.rsi
+    state: icon
+  product: CrateReagents4
+  cost: 750
+  category: Medical
+  group: market
+
+- type: cargoProduct
+  id: Reagents5
+  icon:
+    sprite: Structures/Storage/Crates/medicalcrate_secure.rsi
+    state: icon
+  product: CrateReagents5
+  cost: 1000
+  category: Medical
+  group: market

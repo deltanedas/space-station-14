@@ -319,3 +319,263 @@
       tags:
         - Pill
   - type: Dumpable
+
+- type: entity
+  id: BeakerAluminium
+  suffix: aluminium
+  parent: LargeBeaker
+  components:
+  - type: SolutionContainerManager
+    solutions:
+      drink:
+        maxVol: 100
+        reagents:
+        - ReagentId: Aluminium
+          Quantity: 100
+
+- type: entity
+  id: BeakerCarbon
+  suffix: carbon
+  parent: LargeBeaker
+  components:
+  - type: SolutionContainerManager
+    solutions:
+      drink:
+        maxVol: 100
+        reagents:
+        - ReagentId: Carbon
+          Quantity: 100
+
+- type: entity
+  id: BeakerChlorine
+  suffix: chlorine
+  parent: LargeBeaker
+  components:
+  - type: SolutionContainerManager
+    solutions:
+      drink:
+        maxVol: 100
+        reagents:
+        - ReagentId: Chlorine
+          Quantity: 100
+
+- type: entity
+  id: BeakerCopper
+  suffix: copper
+  parent: LargeBeaker
+  components:
+  - type: SolutionContainerManager
+    solutions:
+      drink:
+        maxVol: 100
+        reagents:
+        - ReagentId: Copper
+          Quantity: 100
+
+- type: entity
+  id: BeakerEthanol
+  suffix: ethanol
+  parent: LargeBeaker
+  components:
+  - type: SolutionContainerManager
+    solutions:
+      drink:
+        maxVol: 100
+        reagents:
+        - ReagentId: Ethanol
+          Quantity: 100
+
+- type: entity
+  id: BeakerFluorine
+  suffix: fluorine
+  parent: LargeBeaker
+  components:
+  - type: SolutionContainerManager
+    solutions:
+      drink:
+        maxVol: 100
+        reagents:
+        - ReagentId: Fluorine
+          Quantity: 100
+
+- type: entity
+  id: BeakerHydrogen
+  suffix: hydrogen
+  parent: LargeBeaker
+  components:
+  - type: SolutionContainerManager
+    solutions:
+      drink:
+        maxVol: 100
+        reagents:
+        - ReagentId: Hydrogen
+          Quantity: 100
+
+- type: entity
+  id: BeakerIodine
+  suffix: iodine
+  parent: LargeBeaker
+  components:
+  - type: SolutionContainerManager
+    solutions:
+      drink:
+        maxVol: 100
+        reagents:
+        - ReagentId: Iodine
+          Quantity: 100
+
+- type: entity
+  id: BeakerIron
+  suffix: iron
+  parent: LargeBeaker
+  components:
+  - type: SolutionContainerManager
+    solutions:
+      drink:
+        maxVol: 100
+        reagents:
+        - ReagentId: Iron
+          Quantity: 100
+
+- type: entity
+  id: BeakerLithium
+  suffix: lithium
+  parent: LargeBeaker
+  components:
+  - type: SolutionContainerManager
+    solutions:
+      drink:
+        maxVol: 100
+        reagents:
+        - ReagentId: Lithium
+          Quantity: 100
+
+- type: entity
+  id: BeakerMercury
+  suffix: mercury
+  parent: LargeBeaker
+  components:
+  - type: SolutionContainerManager
+    solutions:
+      drink:
+        maxVol: 100
+        reagents:
+        - ReagentId: Mercury
+          Quantity: 100
+
+- type: entity
+  id: BeakerNitrogen
+  suffix: nitrogen
+  parent: LargeBeaker
+  components:
+  - type: SolutionContainerManager
+    solutions:
+      drink:
+        maxVol: 100
+        reagents:
+        - ReagentId: Nitrogen
+          Quantity: 100
+
+- type: entity
+  id: BeakerOxygen
+  suffix: oxygen
+  parent: LargeBeaker
+  components:
+  - type: SolutionContainerManager
+    solutions:
+      drink:
+        maxVol: 100
+        reagents:
+        - ReagentId: Oxygen
+          Quantity: 100
+
+- type: entity
+  id: BeakerPhosphorus
+  suffix: phosphorus
+  parent: LargeBeaker
+  components:
+  - type: SolutionContainerManager
+    solutions:
+      drink:
+        maxVol: 100
+        reagents:
+        - ReagentId: Phosphorus
+          Quantity: 100
+
+- type: entity
+  id: BeakerPotassium
+  suffix: potassium
+  parent: LargeBeaker
+  components:
+  - type: SolutionContainerManager
+    solutions:
+      drink:
+        maxVol: 100
+        reagents:
+        - ReagentId: Potassium
+          Quantity: 100
+
+- type: entity
+  id: BeakerRadium
+  suffix: radium
+  parent: LargeBeaker
+  components:
+  - type: SolutionContainerManager
+    solutions:
+      drink:
+        maxVol: 100
+        reagents:
+        - ReagentId: Radium
+          Quantity: 100
+
+- type: entity
+  id: BeakerSilicon
+  suffix: silicon
+  parent: LargeBeaker
+  components:
+  - type: SolutionContainerManager
+    solutions:
+      drink:
+        maxVol: 100
+        reagents:
+        - ReagentId: Silicon
+          Quantity: 100
+
+- type: entity
+  id: BeakerSodium
+  suffix: sodium
+  parent: LargeBeaker
+  components:
+  - type: SolutionContainerManager
+    solutions:
+      drink:
+        maxVol: 100
+        reagents:
+        - ReagentId: Sodium
+          Quantity: 100
+
+- type: entity
+  id: BeakerSugar
+  suffix: sugar
+  parent: LargeBeaker
+  components:
+  - type: SolutionContainerManager
+    solutions:
+      drink:
+        maxVol: 100
+        reagents:
+        - ReagentId: Sugar
+          Quantity: 100
+
+- type: entity
+  id: BeakerSulfur
+  suffix: sulfur
+  parent: LargeBeaker
+  components:
+  - type: SolutionContainerManager
+    solutions:
+      drink:
+        maxVol: 100
+        reagents:
+        - ReagentId: Sulfur
+          Quantity: 100
