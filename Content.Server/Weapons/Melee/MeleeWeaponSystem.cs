@@ -1,7 +1,6 @@
 using System.Linq;
 using Content.Server.Body.Components;
 using Content.Server.Body.Systems;
-using Content.Server.Actions.Events;
 using Content.Server.Chemistry.Components;
 using Content.Server.Chemistry.EntitySystems;
 using Content.Server.CombatMode.Disarm;

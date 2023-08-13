@@ -5,6 +5,7 @@ using Content.Shared.Body.Surgery.Systems;
 using Content.Shared.DoAfter;
 using Content.Shared.IdentityManagement;
 using Content.Shared.Interaction;
+using Content.Shared.Tools.Systems;
 using Robust.Server.GameObjects;
 
 namespace Content.Server.Body.Surgery.Systems;
@@ -22,7 +23,7 @@ public sealed class SurgerySystem : SharedSurgerySystem
         SubscribeLocalEvent<SurgeryDrapesComponent, OrganSelectedMessage>(OnOrganSelected);
 
         SubscribeLocalEvent<SurgeryToolComponent, AfterInteractEvent>(OnToolAfterInteract);
-        SubscribeLocalEvent<SurgeryToolComponent, DoAfterEvent<UseToolDoAfter>>(OnToolDoAfter);
+        SubscribeLocalEvent<SurgeryToolComponent, SurgeryToolDoAfterEvent>(OnToolDoAfter);
 
         SubscribeLocalEvent<OperationComponent, AfterInteractUsingEvent>(OnOperationAfterInteractUsing);
     }
@@ -84,22 +85,19 @@ public sealed class SurgerySystem : SharedSurgerySystem
             step.OnPerformDelayBegin(context);
         }
 
-        var doAfter = new DoAfterEventArgs(user, comp.Delay, target: target, used: uid)
+        var doAfter = new DoAfterArgs(user, comp.Delay, new SurgeryToolDoAfterEvent(), uid, target: target, used: uid)
         {
-            RaiseOnUser = false,
-            RaiseOnTarget = false,
-            RaiseOnUsed = true,
-            BreakOnStun = true,
+            BreakOnDamage = true,
             BreakOnTargetMove = true,
             BreakOnUserMove = true,
-            NeedHand = true // copy pasted this from sticky, it might not be needed
+            NeedHand = uid != user
         };
-        // TODO: merge doafter refactor so doafterevent is predicted
-        _doAfter.DoAfter(doAfter, new UseToolDoAfter());
+
+        _doAfter.TryStartDoAfter(doAfter);
         Operation.SetBusy(operation, true);
     }
 
-    private void OnToolDoAfter(EntityUid uid, SurgeryToolComponent comp, DoAfterEvent<UseToolDoAfter> args)
+    private void OnToolDoAfter(EntityUid uid, SurgeryToolComponent comp, SurgeryToolDoAfterEvent args)
     {
         if (args.Args.Target == null)
             return;

@@ -16,7 +16,7 @@ public sealed partial class ConsciousnessComponent : Component
     public FixedPoint2 RawConsciousness = -1;
 
     //The current consciousness value adjusted by the multiplier and clamped
-    [AutoNetworkedField] public FixedPoint2 Consciousness => FixedPoint2.Clamp(RawConsciousness * Multiplier, 0, Cap);
+    public FixedPoint2 Consciousness => FixedPoint2.Clamp(RawConsciousness * Multiplier, 0, Cap);
 
     //Multiplies the consciousness value whenever it is used. Do not directly edit this value, use multipliers instead!
     [DataField("multiplier"), AutoNetworkedField]
@@ -27,10 +27,10 @@ public sealed partial class ConsciousnessComponent : Component
     public FixedPoint2 Cap = 100;
 
     //List of modifiers that are applied to this consciousness
-    [AutoNetworkedField] public readonly Dictionary<(EntityUid, ConsciousnessModType),ConsciousnessModifier> Modifiers = new();
+    [AutoNetworkedField] public Dictionary<(EntityUid, ConsciousnessModType),ConsciousnessModifier> Modifiers = new();
 
     //List of multipliers that are applied to this consciousness
-    [AutoNetworkedField] public readonly Dictionary<(EntityUid, ConsciousnessModType),ConsciousnessMultiplier> Multipliers = new();
+    [AutoNetworkedField] public Dictionary<(EntityUid, ConsciousnessModType),ConsciousnessMultiplier> Multipliers = new();
 
     [DataField("isConscious"), AutoNetworkedField]
     public bool IsConscious = true;

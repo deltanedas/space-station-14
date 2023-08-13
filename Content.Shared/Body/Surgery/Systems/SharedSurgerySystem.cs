@@ -13,6 +13,7 @@ using Content.Shared.Popups;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Network;
 using Robust.Shared.Prototypes;
+using Robust.Shared.Serialization;
 using Robust.Shared.Timing;
 using System.Linq;
 
@@ -135,4 +136,12 @@ public abstract class SharedSurgerySystem : EntitySystem
         _hands.TryPickupAnyHand(surgeon, organ);
         return true;
     }
+}
+
+/// <summary>
+/// Raised on the tool when its doafter completes.
+/// </summary>
+[Serializable, NetSerializable]
+public sealed class SurgeryToolDoAfterEvent : SimpleDoAfterEvent
+{
 }

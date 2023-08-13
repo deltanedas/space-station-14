@@ -1,8 +1,7 @@
 using Content.Server.Nutrition.Components;
-using Content.Server.Body.Components;
+using Content.Server.Medical.Bloodstream.Components;
 using Content.Shared.Interaction;
 using Content.Server.DoAfter;
-using System.Threading;
 using Content.Server.Explosion.EntitySystems;
 using Content.Shared.Damage;
 using Content.Server.Popups;
@@ -13,6 +12,7 @@ using Content.Shared.Emag.Components;
 using Content.Shared.Nutrition;
 using Content.Server.Atmos.EntitySystems;
 using Content.Server.Atmos;
+using System.Threading;
 
 /// <summary>
 /// System for vapes

@@ -50,7 +50,7 @@ public sealed class PainSystem : EntitySystem
         component.ConsciousnessDamage = state.ConsciousnessDamage;
         if (consciousnessDelta != 0)
         {
-            _consciousnessSystem.AddToDamage(uid, consciousnessDelta);
+//            _consciousnessSystem.AddToDamage(uid, consciousnessDelta);
         }
     }
 
@@ -111,6 +111,6 @@ public sealed class PainSystem : EntitySystem
         if (consciousnessDelta == 0)
             return;
 
-        _consciousnessSystem.AddToDamage(target, consciousnessDelta);
+//        _consciousnessSystem.AddToDamage(target, consciousnessDelta);
     }
 }
