@@ -2,7 +2,6 @@
   id: OrganTransplant
   name: Organ Transplant
   description: Inserts an organ into a bodypart. The organ must not already be present.
-  # TODO: prerequisite ribcage/skull opening
   steps:
   - id: Incision
   - id: VesselCompression
@@ -11,6 +10,9 @@
     insertionHandler: !type:InsertOrgan
   - id: Cauterization # attach organ
   - id: Cauterization # close up wound
+# requirements:
+# - !type:ProtectionRequirement
+# - !type:HasOrgansRequirement
   parts:
   - Torso
   - Head

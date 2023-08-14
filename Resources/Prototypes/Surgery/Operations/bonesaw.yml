@@ -4,11 +4,9 @@
   description: For operating on internal organs in the chest or head.
   steps:
   - id: Bonesaw
+    # TODO: remove protection from part
+  # TODO: requirement has protection
   parts:
   - Torso
   - Head
-  - Arm
-  - Hand
-  - Leg
-  - Foot
   hidden: true

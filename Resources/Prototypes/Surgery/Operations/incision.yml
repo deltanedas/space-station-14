@@ -6,6 +6,7 @@
   - id: Incision
   - id: VesselCompression
   - id: Retraction
+  # TODO: requirements of not having open incision
   parts:
   - Torso
   - Head
@@ -22,6 +23,7 @@
   description: The last step of most surgeries.
   steps:
   - id: Cauterization
+  # TODO: requirements of having an open incision
   parts:
   - Torso
   - Head

@@ -10,6 +10,8 @@
   - id: Cauterization
   effect:
     !type:AmputationEffect
+  # TODO: requirement of not being torso
+  # TODO: requirement of not having currently attached limbs (arm->hand)
   parts:
   - Head
   - Arm

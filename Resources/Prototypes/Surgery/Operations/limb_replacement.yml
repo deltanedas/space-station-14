@@ -14,7 +14,7 @@
   # TODO SURGERY: start bleeding in new limb
   - id: Cauterization
   # TODO SURGERY: stop bleeding
-  # TODO SURGERY: simply require that a target part has children instead of this
+  # TODO: requirement that part has missing children
   parts:
   - Torso
   - Arm

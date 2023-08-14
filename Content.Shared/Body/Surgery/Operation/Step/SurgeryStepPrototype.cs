@@ -9,6 +9,4 @@ public sealed class SurgeryStepPrototype : IPrototype
 {
     [IdDataField]
     public string ID { get; } = string.Empty;
-
-    public string LocId => ID.ToLowerInvariant();
 }

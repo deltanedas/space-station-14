@@ -25,6 +25,7 @@ public sealed class SurgeryOperationPrototype : IPrototype
     [DataField("effect")]
     public IOperationEffect? Effect;
 
+    // TODO: replace with BodyPartRequirement
     /// <summary>
     /// Valid bodyparts that this operation can be done on
     /// </summary>

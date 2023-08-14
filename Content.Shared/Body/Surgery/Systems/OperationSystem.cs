@@ -2,6 +2,7 @@ using Content.Shared.Body.Part;
 using Content.Shared.Body.Surgery.Components;
 using Content.Shared.Body.Surgery.Operation;
 using Content.Shared.Body.Surgery.Operation.Step;
+using Content.Shared.Examine;
 using Content.Shared.IdentityManagement;
 using Content.Shared.Popups;
 using Robust.Shared.GameStates;
@@ -17,9 +18,12 @@ public sealed class OperationSystem : EntitySystem
     [Dependency] private readonly SharedPopupSystem _popup = default!;
     [Dependency] private readonly SharedSurgerySystem _surgery = default!;
 
+    private ISawmill _sawmill = default!;
+
     public IEnumerable<SurgeryOperationPrototype> AllSurgeries =>
         _proto.EnumeratePrototypes<SurgeryOperationPrototype>().Where(op => !op.Hidden);
         // TODO: prerequisites like having ribcage/skull opened or for adding limbs, missing a limb
+        // TODO: use generic requirements system for operations
 
     public IEnumerable<SurgeryOperationPrototype> PossibleSurgeries(BodyPartComponent part)
     {
@@ -32,6 +36,9 @@ public sealed class OperationSystem : EntitySystem
 
         SubscribeLocalEvent<OperationComponent, ComponentGetState>(OnGetState);
         SubscribeLocalEvent<OperationComponent, ComponentHandleState>(OnHandleState);
+        SubscribeLocalEvent<OperationComponent, ExaminedEvent>(OnExamined);
+
+        _sawmill = Logger.GetSawmill("operation");
     }
 
     private void OnGetState(EntityUid uid, OperationComponent comp, ref ComponentGetState args)
@@ -50,6 +57,20 @@ public sealed class OperationSystem : EntitySystem
         comp.SelectedOrgan = state.SelectedOrgan;
     }
 
+    private void OnExamined(EntityUid uid, OperationComponent comp, ExaminedEvent args)
+    {
+        if (!args.IsInDetailsRange)
+            return;
+
+        // show the next step's help text when examining the patient
+        var step = GetNextStep(comp);
+        if (step == null)
+            return;
+
+        var id = step.ID.ToLowerInvariant();
+        args.PushText(Loc.GetString($"surgery-step-{id}-step"));
+    }
+
     /// <summary>
     /// Start a new operation on an entity.
     /// </summary>
@@ -66,7 +87,7 @@ public sealed class OperationSystem : EntitySystem
         }
 
         comp = null;
-        Logger.WarningS("surgery", $"Unknown surgery prototype '{id}' to be used on {ToPrettyString(uid):target}'s {ToPrettyString(part):part}");
+        _sawmill.Warning($"Unknown surgery prototype '{id}' to be used on {ToPrettyString(uid):target}'s {ToPrettyString(part):part}");
         return false;
     }
 
@@ -123,7 +144,7 @@ public sealed class OperationSystem : EntitySystem
         var context = new SurgeryStepContext(target, surgeon, comp, tool, step.ID, this, _surgery);
         if (step.CanPerform(context) && step.Perform(context))
         {
-            Logger.InfoS("surgery", $"{ToPrettyString(surgeon):player} completed step {step.ID} of {comp.Prototype!.Name} on {ToPrettyString(target):target}");
+            _sawmill.Info($"{ToPrettyString(surgeon):player} completed step {step.ID} of {comp.Prototype!.Name} on {ToPrettyString(target):target}");
             step.OnPerformSuccess(context);
             return true;
         }
@@ -131,7 +152,7 @@ public sealed class OperationSystem : EntitySystem
         // if using a cautery, stop the operation regardless of stage
         if (HasComp<CauteryComponent>(toolId))
         {
-            Logger.InfoS("surgery", $"{ToPrettyString(surgeon):player} aborted operation {comp.Prototype!.Name} on {ToPrettyString(target):target}");
+            _sawmill.Info($"{ToPrettyString(surgeon):player} aborted operation {comp.Prototype!.Name} on {ToPrettyString(target):target}");
             var userName = Identity.Name(surgeon, EntityManager);
             var targetName = Identity.Name(target, EntityManager);
             Popup(Loc.GetString("surgery-aborted", ("user", userName), ("target", targetName)), surgeon);
@@ -141,6 +162,18 @@ public sealed class OperationSystem : EntitySystem
 
         step.OnPerformFail(context);
         return false;
+    }
+
+    /// <summary>
+    /// Add the next step to the operations tags, forcing its completion.
+    /// </summary>
+    public void CompleteStep(EntityUid uid, OperationComponent comp, EntityUid surgeon)
+    {
+        var step = GetNextStep(comp);
+        if (step != null)
+        {
+            AddSurgeryTag(surgeon, uid, comp, step.ID);
+        }
     }
 
     public bool CanAddSurgeryTag(OperationComponent comp, SurgeryTag tag)
@@ -194,7 +227,7 @@ public sealed class OperationSystem : EntitySystem
                 return;
         }
 
-        Logger.InfoS("surgery", $"{ToPrettyString(user):player} completed operation {comp.Prototype!.Name} on {ToPrettyString(comp.Part):part}");
+        _sawmill.Info($"{ToPrettyString(user):player} completed operation {comp.Prototype!.Name} on {ToPrettyString(comp.Part):part}");
         comp.Prototype.Effect?.Execute(user, comp);
         RemComp<OperationComponent>(uid);
     }

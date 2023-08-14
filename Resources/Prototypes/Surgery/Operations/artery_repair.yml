@@ -8,6 +8,7 @@
   - id: Cauterization
   effect:
     !type:ArteryRepairEffect
+  # TODO: no requirements
   parts:
   - Torso
   - Head

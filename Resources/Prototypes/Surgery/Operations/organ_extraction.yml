@@ -11,6 +11,8 @@
   - id: Extraction
     behavior: !type:OrganExtraction
   - id: Cauterization
+# requirements:
+# - !type:HasOrgansRequirement
   parts:
   - Torso
   - Head

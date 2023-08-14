@@ -33,7 +33,7 @@ public sealed class SurgerySystem : SharedSurgerySystem
         // TODO SURGERY: validate all input here
         if (Operation.StartOperation(msg.Target, msg.Part, uid, msg.Operation, out var operation))
         {
-            Logger.InfoS("surgery", $"{ToPrettyString(msg.User):player} started operation {operation.Prototype!.Name} on {ToPrettyString(msg.Target):target} (part {msg.Part})");
+            Sawmill.Info($"{ToPrettyString(msg.User):player} started operation {operation.Prototype!.Name} on {ToPrettyString(msg.Target):target} (part {msg.Part})");
             DoDrapesStartPopups(msg.User, msg.Part, operation);
         }
     }
@@ -129,6 +129,8 @@ public sealed class SurgerySystem : SharedSurgerySystem
         args.Handled = Operation.TryInsertItem(comp, args.Used);
         if (args.Handled)
         {
+            Operation.CompleteStep(uid, comp, user);
+
             var id = PopupId("insert-success", user, uid, comp.Part);
             var userName = Identity.Name(user, EntityManager);
             var targetName = Identity.Name(uid, EntityManager);

@@ -8,6 +8,7 @@
   - id: Cauterization
   effect:
     !type:HairlineRepairEffect
+  # TODO: requirement of having bones
   parts:
   - Torso
   - Head
@@ -28,6 +29,7 @@
   - id: Cauterization
   effect:
     !type:CompoundRepairEffect
+  # TODO: requirement of having bones
   parts:
   - Torso
   - Head

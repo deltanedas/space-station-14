@@ -10,6 +10,7 @@
   - id: Cauterization
   effect:
     !type:FacialReconstructionEffect
+  # TODO: BodyPartsRequirement
   parts:
   - Head
   hidden: true # TODO SURGERY

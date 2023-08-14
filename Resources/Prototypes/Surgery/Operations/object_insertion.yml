@@ -12,6 +12,12 @@
     insertionHandler: !type:InsertItem
       maxSize: 10
   - id: Cauterization
+# requirements:
+# - !type:BodyPartsRequirement
+#   parts:
+#   - Torso
+# - !type:ProtectionRequirement
+#   protected: false
   parts:
   - Torso
 

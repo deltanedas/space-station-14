@@ -29,11 +29,15 @@ public abstract class SharedSurgerySystem : EntitySystem
     [Dependency] private readonly IPrototypeManager _proto = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
 
+    protected ISawmill Sawmill = default!;
+
     public override void Initialize()
     {
         base.Initialize();
 
         SubscribeLocalEvent<SurgeryDrapesComponent, AfterInteractEvent>(OnDrapesAfterInteract);
+
+        Sawmill = Logger.GetSawmill("surgery");
 
         foreach (var operation in _proto.EnumeratePrototypes<SurgeryOperationPrototype>())
         {
@@ -41,8 +45,7 @@ public abstract class SharedSurgerySystem : EntitySystem
             {
                 if (!_proto.HasIndex<SurgeryStepPrototype>(step.ID))
                 {
-                    Logger.WarningS("surgery",
-                        $"Invalid {nameof(SurgeryStepPrototype)} found in surgery operation with id {operation.ID}: No step found with id {step.ID}");
+                    Sawmill.Warning($"Invalid {nameof(SurgeryStepPrototype)} found in surgery operation with id {operation.ID}: No step found with id {step.ID}");
                 }
             }
         }

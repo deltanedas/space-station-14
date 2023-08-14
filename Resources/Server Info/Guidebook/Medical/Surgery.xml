@@ -17,7 +17,7 @@ After that examine your patient to see the steps, like in construction.
 <Box>
 <GuideEntityEmbed Entity="Scalpel" Caption=""/>
 <GuideEntityEmbed Entity="Hemostat" Caption=""/>
-<GuideEntityEmbed Entity="Retractors" Caption=""/>
+<GuideEntityEmbed Entity="Retractor" Caption=""/>
 </Box>
 These 3 are your main tools, used at the start of almost every operation.
 
