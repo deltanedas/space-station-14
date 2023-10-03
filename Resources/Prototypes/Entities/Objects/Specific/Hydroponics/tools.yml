@@ -38,6 +38,10 @@
         Slash: 7
   - type: Item
     sprite: Objects/Tools/Hydroponics/clippers.rsi
+  - type: Tool
+    qualities:
+    - Cutting
+    speed: 0.5
 
 - type: entity
   name: scythe
