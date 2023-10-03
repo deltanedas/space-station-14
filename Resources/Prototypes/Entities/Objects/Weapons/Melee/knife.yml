@@ -21,7 +21,10 @@
   - type: Item
   - type: Tool
     qualities:
-      - Slicing
+    - Slicing
+    - Screwing
+    # slicing is unused so this is just for screwing
+    speed: 0.25
     useSound:
       path: /Audio/Items/Culinary/chop.ogg
 
