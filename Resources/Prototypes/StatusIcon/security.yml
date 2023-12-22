@@ -1,0 +1,7 @@
+- type: statusIcon
+  id: WantedIcon
+  priority: 3
+  locationPreference: Left
+  icon:
+    sprite: Interface/Misc/wanted.rsi
+    state: wanted
