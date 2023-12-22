@@ -54,7 +54,8 @@ public sealed class CriminalRecordsSystem : EntitySystem
         record.Status = status;
 
         updatedStatus = record.Status;
-
+        //Console.WriteLine($"Clearing HUD Criminal list");
+        RaiseNetworkEvent(new ClearHUDCriminal());
         _stationRecords.Synchronize(key);
 
         return true;
