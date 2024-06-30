@@ -1,4 +1,6 @@
 using System.Threading;
+using Content.Server.Explosion.Components;
+using Content.Server.Explosion.EntitySystems;
 using Content.Server.GameTicking.Rules.Components;
 using Content.Server.Power.Components;
 using Content.Server.Power.EntitySystems;
@@ -8,6 +10,7 @@ using Content.Shared.GameTicking.Components;
 using JetBrains.Annotations;
 using Robust.Shared.Audio;
 using Robust.Shared.Player;
+using Robust.Shared.Random;
 using Robust.Shared.Utility;
 using Timer = Robust.Shared.Timing.Timer;
 
@@ -17,6 +20,18 @@ namespace Content.Server.StationEvents.Events
     public sealed class PowerGridCheckRule : StationEventSystem<PowerGridCheckRuleComponent>
     {
         [Dependency] private readonly ApcSystem _apcSystem = default!;
+        [Dependency] private readonly ExplosionSystem _explosion = default!;
+
+        private EntityQuery<ExplosiveComponent> _explosiveQuery;
+
+        public override void Initialize()
+        {
+            base.Initialize();
+
+            _explosiveQuery = GetEntityQuery<ExplosiveComponent>();
+
+            SubscribeLocalEvent<ApcToggledEvent>(OnApcToggled);
+        }
 
         protected override void Started(EntityUid uid, PowerGridCheckRuleComponent component, GameRuleComponent gameRule, GameRuleStartedEvent args)
         {
@@ -28,9 +43,9 @@ namespace Content.Server.StationEvents.Events
             component.AffectedStation = chosenStation.Value;
 
             var query = AllEntityQuery<ApcComponent, TransformComponent>();
-            while (query.MoveNext(out var apcUid ,out var apc, out var transform))
+            while (query.MoveNext(out var apcUid, out var apc, out var xform))
             {
-                if (apc.MainBreakerEnabled && CompOrNull<StationMemberComponent>(transform.GridUid)?.Station == chosenStation)
+                if (apc.MainBreakerEnabled && StationSystem.GetGridStation(xform.GridUid) == chosenStation)
                     component.Powered.Add(apcUid);
             }
 
@@ -91,6 +106,28 @@ namespace Content.Server.StationEvents.Events
                         _apcSystem.ApcToggleBreaker(selected, apcComponent);
                 }
                 component.Unpowered.Add(selected);
+            }
+        }
+
+        private void OnApcToggled(ref ApcToggledEvent args)
+        {
+            var grid = Transform(args.Apc).GridUid;
+            if (StationSystem.GetGridStation(grid) is not {} target)
+                return;
+
+            if (!_explosiveQuery.TryComp(args.Apc, out var explosive))
+                return;
+
+            var query = QueryActiveRules();
+            while (query.MoveNext(out var uid, out _, out var comp, out _))
+            {
+                if (comp.AffectedStation != target)
+                    return;
+
+                if (!RobustRandom.Prob(comp.ExplosionChance))
+                    return;
+
+                _explosion.TriggerExplosive(args.Apc, explosive);
             }
         }
     }
