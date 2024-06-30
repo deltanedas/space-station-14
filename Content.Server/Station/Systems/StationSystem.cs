@@ -399,6 +399,7 @@ public sealed class StationSystem : EntitySystem
     /// <returns>The owning station, if any.</returns>
     /// <remarks>
     /// This does not remember what station an entity started on, it simply checks where it is currently located.
+    /// Things like the cargo shuttle and grids that are split off still count as station members.
     /// </remarks>
     public EntityUid? GetOwningStation(EntityUid entity, TransformComponent? xform = null)
     {
@@ -424,6 +425,25 @@ public sealed class StationSystem : EntitySystem
         }
 
         return CompOrNull<StationMemberComponent>(xform.GridUid)?.Station;
+    }
+
+    /// <summary>
+    /// Get the station entity corresponding to a grid entity.
+    /// Ignores members etc and just works off of the station's grids.
+    /// </summary>
+    public EntityUid? GetGridStation(EntityUid? gridUid)
+    {
+        if (gridUid is not {} grid)
+            return null;
+
+        var query = EntityQueryEnumerator<StationDataComponent>();
+        while (query.MoveNext(out var uid, out var comp))
+        {
+            if (comp.Grids.Contains(grid))
+                return uid;
+        }
+
+        return null;
     }
 
     public List<EntityUid> GetStations()
