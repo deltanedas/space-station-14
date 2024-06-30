@@ -84,6 +84,11 @@
   - type: Apc
     voltage: Apc
   - type: ExtensionCableProvider
+  - type: Explosive
+    totalIntensity: 10
+    intensitySlope: 1
+    maxIntensity: 2
+    canCreateVacuum: false
   - type: UserInterface
     interfaces:
       enum.ApcUiKey.Key:
