@@ -33,6 +33,7 @@ public sealed class ApcSystem : EntitySystem
 
         SubscribeLocalEvent<ApcComponent, BoundUIOpenedEvent>(OnBoundUiOpen);
         SubscribeLocalEvent<ApcComponent, ComponentStartup>(OnApcStartup);
+        SubscribeLocalEvent<ApcComponent, MapInitEvent>(OnMapInit);
         SubscribeLocalEvent<ApcComponent, ChargeChangedEvent>(OnBatteryChargeChanged);
         SubscribeLocalEvent<ApcComponent, ApcToggleMainBreakerMessage>(OnToggleMainBreaker);
         SubscribeLocalEvent<ApcComponent, GotEmaggedEvent>(OnEmagged);
@@ -64,11 +65,21 @@ public sealed class ApcSystem : EntitySystem
         UpdateApcState(uid, component);
     }
 
-    private static void OnApcStartup(EntityUid uid, ApcComponent component, ComponentStartup args)
+    private void OnApcStartup(EntityUid uid, ApcComponent component, ComponentStartup args)
     {
         // We cannot update immediately, as various network/battery state is not valid yet.
         // Defer until the next tick.
         component.NeedStateUpdate = true;
+    }
+
+    private void OnMapInit(Entity<ApcComponent> ent, ref MapInitEvent args)
+    {
+        if (!ent.Comp.MainBreakerEnabled)
+            return;
+
+        // for constructing new apcs during blackout to potentially explode
+        var ev = new ApcToggledEvent(ent, true);
+        RaiseLocalEvent(ent, ref ev, true);
     }
 
     //Update the HasAccess var for UI to read
@@ -111,6 +122,9 @@ public sealed class ApcSystem : EntitySystem
 
         UpdateUIState(uid, apc);
         _audio.PlayPvs(apc.OnReceiveMessageSound, uid, AudioParams.Default.WithVolume(-2f));
+
+        var ev = new ApcToggledEvent(uid, apc.MainBreakerEnabled);
+        RaiseLocalEvent(uid, ref ev, true);
     }
 
     private void OnEmagged(EntityUid uid, ApcComponent comp, ref GotEmaggedEvent args)
@@ -215,3 +229,10 @@ public sealed class ApcSystem : EntitySystem
 
 [ByRefEvent]
 public record struct ApcToggleMainBreakerAttemptEvent(bool Cancelled);
+
+/// <summary>
+/// Raised on the APC and broadcast when it's toggled.
+/// Also gets raised on mapinit if the apc is on by default.
+/// </summary>
+[ByRefEvent]
+public record struct ApcToggledEvent(EntityUid Apc, bool Enabled);
