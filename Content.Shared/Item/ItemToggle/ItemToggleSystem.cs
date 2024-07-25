@@ -45,10 +45,8 @@ public sealed class ItemToggleSystem : EntitySystem
 
     private void OnMapInit(Entity<ItemToggleComponent> ent, ref MapInitEvent args)
     {
-        if (!ent.Comp.Activated)
-            return;
-
-        var ev = new ItemToggledEvent(Predicted: ent.Comp.Predictable, Activated: ent.Comp.Activated, User: null);
+        // TODO: when mapinit is predicted by client dont have this be false
+        var ev = new ItemToggledEvent(Predicted: false, Activated: ent.Comp.Activated, User: null);
         RaiseLocalEvent(ent, ref ev);
     }
 
