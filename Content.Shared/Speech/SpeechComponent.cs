@@ -56,5 +56,12 @@ namespace Content.Shared.Speech
         public float SoundCooldownTime { get; set; } = 0.5f;
 
         public TimeSpan LastTimeSoundPlayed = TimeSpan.Zero;
+
+        /// <summary>
+        /// GreyStation: Make in-world message colour configurable.
+        /// Randomized on spawn.
+        /// </summary>
+        [DataField, AutoNetworkedField]
+        public Color MessageColor = Color.White;
     }
 }
