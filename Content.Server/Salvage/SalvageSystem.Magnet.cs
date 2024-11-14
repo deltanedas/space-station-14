@@ -90,6 +90,11 @@ public sealed partial class SalvageSystem
             {
                 if (magnetData.EndTime.Value < curTime)
                 {
+                    if (GetMagnet((uid, magnetData)) is {} magnet)
+                    {
+                        Report(magnet, MagnetChannel, "salvage-system-announcement-lost");
+                    }
+
                     EndMagnet((uid, magnetData));
                 }
                 else if (!magnetData.Announced && (magnetData.EndTime.Value - curTime).TotalSeconds < 31)
