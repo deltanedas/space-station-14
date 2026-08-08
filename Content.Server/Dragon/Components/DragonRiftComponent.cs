@@ -22,7 +22,7 @@ public sealed partial class DragonRiftComponent : SharedDragonRiftComponent
     /// <summary>
     /// The maximum amount we can accumulate before becoming impervious.
     /// </summary>
-    [DataField("maxAccumulator")]
+    [DataField("maxAccumualator")] // load bearing typo...
     public float MaxAccumulator = 300f;
 
     /// <summary>
