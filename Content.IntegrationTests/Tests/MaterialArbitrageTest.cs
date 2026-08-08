@@ -56,8 +56,8 @@ public sealed class MaterialArbitrageTest : GameTest
 
         var constructionName = compFact.CompName<ConstructionComponent>();
         var compositionName = compFact.CompName<PhysicalCompositionComponent>();
-        var materialName = compFact.GetComponentName<MaterialComponent>();
-        var destructibleName = compFact.GetComponentName<DestructibleComponent>();
+        var materialName = compFact.CompName<MaterialComponent>();
+        var destructibleName = compFact.CompName<DestructibleComponent>();
         var refinableName = compFact.CompName<ToolRefinableComponent>();
 
         // get the inverted lathe recipe dictionary
@@ -119,7 +119,8 @@ public sealed class MaterialArbitrageTest : GameTest
                     var stackProto = protoManager.Index<StackPrototype>(materialStep.MaterialPrototypeId);
                     var spawnProto = protoManager.Index(stackProto.Spawn);
 
-                    if (!spawnProto.TryComp<PhysicalCompositionComponent>(compositionName, out var mat))
+                    if (!spawnProto.HasComp(materialName) ||
+                        !spawnProto.TryComp<PhysicalCompositionComponent>(compositionName, out var mat))
                         continue;
 
                     foreach (var (matId, amount) in mat.MaterialComposition)
@@ -142,7 +143,8 @@ public sealed class MaterialArbitrageTest : GameTest
         {
             Dictionary<ProtoId<MaterialPrototype>, int>? baseComposition = null;
 
-            if (proto.TryComp<PhysicalCompositionComponent>(compositionName, out var compositionComp))
+            if (proto.HasComp(materialName) &&
+                proto.TryComp<PhysicalCompositionComponent>(compositionName, out var compositionComp))
             {
                 baseComposition = compositionComp.MaterialComposition;
             }
@@ -163,13 +165,11 @@ public sealed class MaterialArbitrageTest : GameTest
                     continue;
 
                 var refineProto = protoManager.Index(refineResult.PrototypeId.Value);
-                if (!refineProto.Components.ContainsKey(materialName))
+                if (!refineProto.HasComp(materialName))
                     continue;
 
-                if (!refineProto.Components.TryGetValue(compositionName, out var refinedCompositionReg))
+                if (!refineProto.TryComp<PhysicalCompositionComponent>(compositionName, out var refinedCompositionComp))
                     continue;
-
-                var refinedCompositionComp = (PhysicalCompositionComponent)refinedCompositionReg.Component;
 
                 // This assumes refine results do not have complex spawn behaviours like exclusive groups.
                 var quantity = refineResult.MaxAmount;
@@ -196,10 +196,8 @@ public sealed class MaterialArbitrageTest : GameTest
             if (proto.HideSpawnMenu || proto.Abstract || pair.IsTestPrototype(proto))
                 continue;
 
-            if (!proto.Components.TryGetValue(destructibleName, out var destructible))
+            if (!proto.TryComp<DestructibleComponent>(destructibleName, out var comp))
                 continue;
-
-            var comp = (DestructibleComponent) destructible.Component;
 
             var spawnedEnts = new Dictionary<EntProtoId, float>();
             var spawnedMats = new Dictionary<ProtoId<MaterialPrototype>, float>();
@@ -309,13 +307,12 @@ public sealed class MaterialArbitrageTest : GameTest
                     if (completion is not SpawnPrototype spawnCompletion)
                         continue;
 
-                    var spawnProto = protoManager.Index<EntityPrototype>(spawnCompletion.Prototype);
+                    var spawnProto = protoManager.Index(spawnCompletion.Prototype);
 
-                    if (!spawnProto.Components.ContainsKey(materialName) ||
-                        !spawnProto.Components.TryGetValue(compositionName, out var compositionReg))
+                    if (!spawnProto.HasComp(materialName) ||
+                        !spawnProto.TryComp<PhysicalCompositionComponent>(compositionName, out var mat))
                         continue;
 
-                    var mat = (PhysicalCompositionComponent) compositionReg.Component;
                     foreach (var (matId, amount) in mat.MaterialComposition)
                     {
                         materials[matId] = spawnCompletion.Amount * amount + materials.GetValueOrDefault(matId);
@@ -377,10 +374,9 @@ public sealed class MaterialArbitrageTest : GameTest
             if (proto.HideSpawnMenu || proto.Abstract || pair.IsTestPrototype(proto))
                 continue;
 
-            if (!proto.Components.TryGetValue(compositionName, out var composition))
+            if (!proto.TryComp<PhysicalCompositionComponent>(compositionName, out var comp))
                 continue;
 
-            var comp = (PhysicalCompositionComponent) composition.Component;
             physicalCompositions.Add(proto.ID, comp);
         }
 
